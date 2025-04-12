@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lalit's Landing Page</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 16px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      max-width: 90%;
+      width: 600px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .link-list {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .link-button {
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .link-button:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Lalit's Projects</h1>
+    <p>Select a page to visit:</p>
+    
+    <div class="link-list" id="linkList">
+      <!-- Links will be added here by JS -->
+    </div>
+  </div>
+
+  <script>
+    // Add your static page links here
+    const links = [
+      { name: "Home Page", url: "home.html" },
+      { name: "About Me", url: "about.html" },
+      { name: "Contact", url: "contact.html" },
+      { name: "Projects", url: "projects.html" },
+      { name: "Image Annotator Tool", url: "annotator.html" },
+    ];
+
+    const linkList = document.getElementById("linkList");
+
+    links.forEach(link => {
+      const a = document.createElement("a");
+      a.href = link.url;
+      a.textContent = link.name;
+      a.className = "link-button";
+      linkList.appendChild(a);
+    });
+  </script>
+</body>
+</html>
