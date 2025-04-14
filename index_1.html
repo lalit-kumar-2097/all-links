@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            }
+
+            .box {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background: #fff;
+            padding: 10px;
+            min-height: 400px;
+            overflow: hidden;
+            }
+
+            .photo {
+            flex-shrink: 0;
+            }
+
+            .photo img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            }
+
+            .description {
+            padding: 10px 0;
+            font-size: 14px;
+            line-height: 1.4;
+            }
+
+            .type-img {
+            margin-top: auto;
+            text-align: center;
+            }
+
+            .type-img a {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            }
+
+            .type-img a:hover {
+            background: #218838;
+            }
+
+            .page-layout{
+                width: 60%;
+                margin: auto;
+            }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+    <div class="container">
+        <div class="box">
+          <div class="photo">
+            <img src="static/img/image_as_video.png" alt="Image As Video">
+          </div>
+          <div class="description">
+            This tool allows the user to play a list of images as a video...
+          </div>
+          <div class="type-img">
+            <a href="https://lalit-kumar-2097.github.io/all-links/images-in-a-video.html">Image As Video Player</a>
+          </div>
+        </div>
+        <!-- Repeat .box for others -->
+      </div>
+    </div>      
+</body>
+</html>

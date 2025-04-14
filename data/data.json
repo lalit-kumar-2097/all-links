@@ -1,0 +1,26 @@
+[
+    {
+        "img": "static/img/sports_annotator.png",
+        "description": "This tool allows annotation on sports frames and let the user to download the CSV of the judgements given by the user.",
+        "link": "apps/sports_annotator/index.html",
+        "title": "Sports Annotator"
+    },
+    {
+        "img": "static/img/image_viewer_1.png",
+        "description": "This tool lets the user to load image_urls in a row format.",
+        "link": "apps/image_viewer/index.html",
+        "title": "Image URL Viewer"
+    },
+    {
+        "img": "static/img/upload_check.png",
+        "description": "This tool allows the user to load image URLs on a webpage and shows the Image Number and Image Resolution for each image.",
+        "link": "apps/upload_check/index.html",
+        "title": "UPLOAD Check"
+    },
+    {
+        "img": "static/img/image_as_video.png",
+        "description": "This tool allows the user to play a list of images as a video...",
+        "link": "apps/image_as_video/index.html",
+        "title": "Image As Video Player"
+    }    
+]
