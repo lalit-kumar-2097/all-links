@@ -196,7 +196,9 @@ button:hover{
 
 <script>
     var videos = []; // Array to store video elements
-
+    const d = new Date();
+    let year = d.getFullYear();
+    
     function playAllVideos() {
         for (var i = 0; i < videos.length; i++) {
             videos[i].play();
@@ -261,7 +263,7 @@ button:hover{
 
             if (footer_count == 0){
             const f = document.createElement("footer");
-            const node1 = document.createTextNode("© Copyright 2023, All rights reserved by AKHILESH");
+            const node1 = document.createTextNode("© Copyright "+year+", All rights reserved by AKHILESH");
             const br = document.createElement("br");
             const node2 = document.createTextNode("If you have reached here, till the bottom of the page, you are AWESOME");
             f.appendChild(node1);
