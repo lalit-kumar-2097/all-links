@@ -28,5 +28,11 @@
         "description": "This tool allows annotation on sports frames and let the user to download the CSV of the judgements given by the user.",
         "link": "apps/sports_annotator/index.html",
         "title": "Sports Annotator"
-    }        
+    },
+    {
+        "img": "static/img/custom_image_annotator.png",
+        "description": "This tool allows annotation on images by given by the user where the user can also give the list of options as well separated by line break.",
+        "link": "apps/custom_image_annotator/index.html",
+        "title": "Custom Image Annotator"
+    }      
 ]
