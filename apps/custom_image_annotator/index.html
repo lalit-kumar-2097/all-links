@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Judgement Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+
+    textarea {
+      width: 80%;
+    }
+
+    .btn {
+      padding: 10px 15px;
+      margin: 5px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .btn.selected {
+      background-color: #2196F3;
+      color: white;
+    }
+
+    .copied {
+      font-style: italic;
+      color: green;
+    }
+
+    #image-display img {
+      max-width: 80%;
+      max-height: 400px;
+      margin: 10px 0;
+    }
+
+    #serial {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    #top-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 80%;
+      margin: auto;
+    }
+
+    #top-controls .right-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    #status-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    #timer {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #progress-container {
+      width: 80%;
+      height: 20px;
+      background: #eee;
+      margin: 20px auto;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    #progress-bar {
+      height: 100%;
+      background: #4caf50;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+/* BELOW IS PASTED */
+
+body{
+    /* font: 15px/1.5 Arial, Helvetica sans-serif; */
+    font: 15px/1.5 Arial, Helvetica sans-serif;
+    padding: 0;
+    margin: 0;
+    background-color: #f4f4f4;    
+    padding-top: 110px;
+}
+
+
+
+/* Global */
+.page-layout{
+    width: 60%;
+    margin: auto;
+}
+
+
+/* header{
+    background: #35424a;
+    color: #ffffff;
+    padding-top: 30px;
+    min-height: 70px;
+    border-bottom: #e8491d 3px solid;    
+} */
+
+header{
+    background: rgb(48, 97, 215);
+    color: #ffffff;
+    padding-top: 30px;
+    min-height: 70px;
+    border-bottom: #767676 4.5px solid;
+    font-family: Roboto;
+    font-size: x-large;
+    font-weight: 300;
+}
+
+h2 {
+    color: rgb(48, 97, 215);
+    background-color: #f4f4f4;
+    margin: auto;
+    font-family: Roboto;
+    font-size: xx-large;
+    font-weight: 300;
+}
+
+#branding{
+    padding-right: 10px;
+    padding-left: 10px;
+    display: inline-block;
+    color: rgb(48, 97, 215);
+    border: 0.7px solid #f4f4f4;
+    background-color: #f4f4f4;
+    border-radius: 4px;
+    margin: auto;
+    letter-spacing: 5px;
+    margin-left: -400px;
+}
+
+.container{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-rows: repeat(4, 1fr); */
+    grid-template-rows: repeat();
+    grid-gap: 1rem;
+}
+
+.box{
+    border: 0.7px solid grey;
+    padding: 15px    
+}
+
+.box img{
+    height: auto;
+    width: 100%;
+    margin: auto;
+    max-height: -webkit-fill-available;
+}
+
+.box video{
+    height: auto;
+    width: 100%;
+    margin: auto;
+    max-height: -webkit-fill-available;
+}
+
+
+.box li{
+    list-style: none;
+}
+
+.photo{
+    height: 300px;
+    width: 260px;
+    margin: auto;
+}
+
+#main-data{
+    margin-top: 15px;
+}
+
+
+.type-img{
+    color:rgb(255 255 255);
+    display: inline-block;
+    border-radius: 6px;    
+    border: 0.7px solid #ffffff;    
+    background-color: #399c38;
+    padding-right: 3px;
+    padding-left: 3px;
+}
+
+.type-video{
+    color:rgb(255 255 255);
+    display: inline-block;
+    border-radius: 6px;    
+    border: 0.7px solid #ffffff;    
+    background-color: #ff3636;
+    padding-right: 3px;
+    padding-left: 3px;
+}
+
+nav{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    min-height: 70px;
+    background-image: linear-gradient(to right, rgb(4 8 18), rgb(48,97,215));
+    /* background: rgb(48, 97, 215); */
+    color: #ffffff;
+    padding-top: 30px;
+    border-bottom: #767676 4.5px solid;
+    font-family: Roboto;
+    font-size: x-large;
+    font-weight: 300;
+}
+
+
+nav { 
+    z-index: 3;
+}
+  
+video-player {
+    z-index: 1;
+}
+
+#main-content label{
+    padding-bottom: 10px;
+    display: inline-block;
+    color: rgb(48, 97, 215);
+    border: 0.7px solid #f4f4f4;
+    background-color: #f4f4f4;
+    border-radius: 4px;
+    margin: auto;
+}
+/* #ff3636 */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+main {
+  min-height: calc(100% - 2em);
+  /* 2em is the combined height of the header and footer */
+}
+
+footer {
+    height: 2em;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    /* background-color: rgb(48, 97, 215); */
+    background-image: linear-gradient(15deg, rgb(4 8 18), rgb(48,97,215));
+    color:white;
+    align-items: center;
+    height: 50px;    
+  }
+
+footer p{
+    padding-right: 10px;
+    padding-left: 10px;
+    display: inline-block;
+    color: rgb(48, 97, 215);
+    border: 0.7px solid #f4f4f4;
+    background-color: #f4f4f4;
+    border-radius: 4px;
+    margin: auto;
+    font-family: Roboto;
+    font-size: inherit;
+    font-weight: 300;
+}
+
+.nav-img{
+    float:right;
+}
+.nav-img img{
+    float: right;
+    height: 100px;
+    width: auto;
+}
+.nav-img p{
+    direction: rtl;
+    font-size: initial;
+    letter-spacing: 4px;
+}
+
+@media screen and (max-width: 700px) {
+    .container{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        /* grid-template-rows: repeat(4, 1fr); */
+        grid-template-rows: repeat();
+        grid-gap: 1rem;
+    }    
+}
+
+
+@media screen and (max-width: 1200px){
+    .nav-img{
+        display: contents
+    }
+    .page-layout{
+        display: inherit;
+    }
+}
+
+
+  </style>
+</head>
+<body>
+    <main>
+    <nav>
+        <div class="page-layout">
+            <p id="branding">Image Judgement Tool</p>
+            <div class="nav-img">
+            <img src="../../static/img/nav-img1.png" alt="">
+            <p>A Lalit Kumar Production</p>
+            </div>            
+        </div>    
+    </nav>    
+
+<section id="main-data">
+  <div id="upload-section">
+    <textarea id="image-urls" rows="10" placeholder="Paste image URLs (space separated)..."></textarea>
+    <textarea id="custom-options" rows="2" placeholder="Enter judgment options (space separated)..."></textarea>
+    <br>
+    <button class="btn" onclick="preloadImages()">Preload Images</button>
+    <div id="loading"></div>
+  </div>
+
+  <div id="start-button" style="display: none;">
+    <button class="btn" onclick="startJudging()">Start Judging</button>
+  </div>
+
+  <div id="image-display" style="display:none;">
+        <div id="top-controls">
+        <div style="flex: 1;"></div>
+        <div id="serial"></div>
+        <div class="right-buttons">
+            <button class="btn" onclick="goBack()">Back</button>
+            <button class="btn" onclick="submitTask()">Submit</button>
+        </div>
+        </div>
+
+        <img id="current-image" src="" alt="Current image">
+        <div>
+        <button class="btn" onclick="copyUrl()" id="copy-btn">Copy URL</button>
+        </div>
+
+        <div id="status-buttons"></div>
+
+        <div id="timer">Time: 0.00s</div>
+
+        <div id="progress-container">
+        <div id="progress-bar"></div>
+        </div>
+  </div>
+
+  <div>
+    <button class="btn" onclick="downloadCSV()" id="download-btn" style="display:none;">Download CSV</button>
+  </div>
+</section>
+</main>
+  <script>
+    let categories = [];
+    let imageUrls = [];
+    let preloadedImages = [];
+    let currentIndex = 0;
+    let results = [];
+    let startTime;
+    let selectedStatus = null;
+    let timerInterval;    
+
+    document.addEventListener('keydown', function (e) {
+      const key = parseInt(e.key);
+      if (key >= 1 && key <= categories.length) {
+        selectOption(categories[key - 1]);
+      }
+      if (e.key === 'Enter') {
+        submitTask();
+      }
+    });
+
+    function preloadImages() {
+      const input = document.getElementById('image-urls').value.trim();
+      imageUrls = input.split(/\s+/).filter(url => url);
+      preloadedImages = new Array(imageUrls.length);
+
+      if (imageUrls.length === 0) {
+        alert("Please enter some image URLs.");
+        return;
+      }
+
+      document.getElementById('loading').innerText = `Loading ${imageUrls.length} images...`;
+
+      let loadedCount = 0;
+      imageUrls.forEach((url, i) => {
+        const img = new Image();
+        img.src = url;
+        img.onload = () => {
+          preloadedImages[i] = img;
+          loadedCount++;
+          document.getElementById('loading').innerText = `Loaded ${loadedCount}/${imageUrls.length} images...`;
+
+          if (loadedCount === imageUrls.length) {
+            document.getElementById('loading').innerText = 'All images loaded!';
+            document.getElementById('start-button').style.display = 'block';
+          }
+        };
+        img.onerror = () => {
+          document.getElementById('loading').innerText = `Error loading image at: ${url}`;
+        };
+      });
+
+      const optionsInput = document.getElementById('custom-options').value.trim();
+      if (!optionsInput) {
+        alert("Please enter judgment options.");
+        return;
+      }
+      categories = optionsInput.split(/\n+/);
+    }
+
+    function startJudging() {
+      document.getElementById('upload-section').style.display = 'none';
+      document.getElementById('start-button').style.display = 'none';
+      document.getElementById('image-display').style.display = 'block';
+      document.getElementById('download-btn').style.display = 'inline-block';
+      currentIndex = 0;
+      results = [];
+      buildCategoryButtons();
+      showImage();
+    }
+
+    function buildCategoryButtons() {
+      const container = document.getElementById('status-buttons');
+      container.innerHTML = '';
+      categories.forEach((cat, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.innerText = `${i + 1}. ${cat}`;
+        btn.onclick = () => selectOption(cat);
+        btn.id = `cat-btn-${i}`;
+        container.appendChild(btn);
+      });
+    }
+
+    function showImage() {
+      selectedStatus = null;
+      resetButtonStyles();
+      document.getElementById('current-image').src = imageUrls[currentIndex];
+      document.getElementById('serial').innerText = `Image #${currentIndex + 1}`;
+      document.getElementById('copy-btn').innerText = 'Copy URL';
+      document.getElementById('copy-btn').classList.remove('copied');
+      updateProgressBar();
+      startTime = new Date();
+      resetTimer();
+    }
+
+    function resetButtonStyles() {
+      categories.forEach((_, i) => {
+        const btn = document.getElementById(`cat-btn-${i}`);
+        if (btn) btn.classList.remove('selected');
+      });
+    }
+
+    function selectOption(status) {
+      selectedStatus = status;
+      resetButtonStyles();
+      const index = categories.indexOf(status);
+      if (index >= 0) {
+        document.getElementById(`cat-btn-${index}`).classList.add('selected');
+      }
+    }
+
+    function submitTask() {
+      if (!selectedStatus) {
+        alert("Please select an option before submitting.");
+        return;
+      }
+
+      const timeJudged = new Date();
+      const timeTaken = (timeJudged - startTime) / 1000;
+
+      results.push({
+        serial: currentIndex + 1,
+        url: imageUrls[currentIndex],
+        status: selectedStatus,
+        judgedAt: timeJudged.toISOString(),
+        timeTaken: timeTaken.toFixed(2)
+      });
+
+      currentIndex++;
+      if (currentIndex < imageUrls.length) {
+        showImage();
+      } else {
+        clearInterval(timerInterval);
+        alert("All images judged!");
+        document.getElementById('image-display').style.display = 'none';
+      }
+    }
+
+    function goBack() {
+      if (currentIndex === 0) {
+        alert("You're at the first image.");
+        return;
+      }
+
+      currentIndex--;
+      results.pop();
+      showImage();
+    }
+
+    function copyUrl() {
+      const url = imageUrls[currentIndex];
+      navigator.clipboard.writeText(url).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.innerText = 'Copied!';
+        btn.classList.add('copied');
+      });
+    }
+
+    function downloadCSV() {
+      if (results.length === 0) {
+        alert("No judgments recorded yet.");
+        return;
+      }
+
+      let csvContent = "Serial Number,Image URL,Status,Judged At,Time Taken (s)\n";
+      results.forEach(r => {
+        csvContent += `${r.serial},"${r.url}",${r.status},${r.judgedAt},${r.timeTaken}\n`;
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'image_judgement_results.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function updateProgressBar() {
+      const percent = (currentIndex / imageUrls.length) * 100;
+      document.getElementById('progress-bar').style.width = `${percent}%`;
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      const timerDisplay = document.getElementById('timer');
+      timerDisplay.innerText = 'Time: 0.00s';
+      const start = Date.now();
+      timerInterval = setInterval(() => {
+        const elapsed = (Date.now() - start) / 1000;
+        timerDisplay.innerText = `Time: ${elapsed.toFixed(2)}s`;
+      }, 100);
+    }
+  </script>
+
+</body>
+</html>
