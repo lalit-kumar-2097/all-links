@@ -373,6 +373,9 @@ footer p{
     <button class="btn" onclick="downloadCSV()" id="download-btn" style="display:none;">Download CSV</button>
   </div>
 </section>
+
+<section id=my_footer></section>
+      
 </main>
   <script>
     let categories = [];
@@ -382,7 +385,10 @@ footer p{
     let results = [];
     let startTime;
     let selectedStatus = null;
-    let timerInterval;    
+    let timerInterval;   
+    var footer_count = 0;
+    const d = new Date();
+    let year = d.getFullYear();
 
     document.addEventListener('keydown', function (e) {
       const key = parseInt(e.key);
@@ -567,6 +573,21 @@ footer p{
         timerDisplay.innerText = `Time: ${elapsed.toFixed(2)}s`;
       }, 100);
     }
+
+    
+    if (footer_count == 0){
+            const f = document.createElement("footer");
+            const node1 = document.createTextNode("© Copyright "+ year +", All rights reserved by AKHILESH");
+            const br = document.createElement("br");
+            const node2 = document.createTextNode("If you have reached here, till the bottom of the page, you are AWESOME");
+            f.appendChild(node1);
+            f.appendChild(br);
+            f.appendChild(node2);            
+            document.body.appendChild(f)
+            footer_count = footer_count+1;
+            console.log(footer_count)
+      }
+    
   </script>
 
 </body>
