@@ -70,20 +70,29 @@
         }
 
         .container{
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            /* grid-template-rows: repeat(4, 1fr); */
+            /* display: grid;
+            grid-template-columns: repeat(3, 1fr);            
             grid-template-rows: repeat();
             grid-gap: 1rem;
+            align-items: stretch; */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            align-items: stretch; /* ensures each column aligns vertically */
+            padding: 20px;
         }
 
         .box{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
             border: 0.7px solid grey;
             padding: 15px;
-            display: flex;
-            flex-flow: column; 
-            display: flex;         
             border-radius: 10px;
+            background-color: white;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-sizing: border-box;
         }
 
         .box img{
@@ -186,10 +195,12 @@
         body {
         height: 100%;
         margin: 0;
+        padding: 0;
         }
 
         main {
-        min-height: calc(100% - 2em);
+            margin-top: 9em;
+        /* min-height: calc(100% - 10em); */
         /* 2em is the combined height of the header and footer */
         }
 
@@ -254,6 +265,51 @@
         }
 
 
+        /* EXPERIMENT */
+        .box-link {
+        height: 100%;
+        }
+
+        .box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .description {
+            flex-grow: 1;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.4;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .description:visited {
+            color: #000; /* Same as normal, no purple */
+            text-decoration: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+
+        .type-img{
+            text-align: center;
+            background: #399c38;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .box p a:visited {
+            color: #000; /* Same as normal, no purple */
+            text-decoration: none;
+        }
+
     </style>
 
 
@@ -301,21 +357,26 @@
             .then(data => {
                 const container = document.getElementById("tool-container");
                 data.forEach(tool => {
-                    container.innerHTML += `              
-                            <div class="box">   
+                    container.innerHTML += `                                         
+                            <a href="${tool.link}" class="box-link">
+                            <div class="box">
                                 <div class="photo">
-                                    <img src="${tool.img}">
-                                </div>                             
-                                <br>
-                                <li>${tool.description}</li><br>                                
-                                <li class="type-img"><a href="${tool.link}">${tool.title}</a></li>                                  
-                            </div>                        
+                                <img src="${tool.img}">
+                                </div>
+                                <div class="description">
+                                ${tool.description}
+                                </div>
+                                <div class="type-img">
+                                ${tool.title}
+                                </div>
+                            </div>
+                            </a>
+
+
                     `;
                 });
             })
             .catch(error => console.error("Error loading tools:", error));
     </script>
-
-
 </body>
 </html>
