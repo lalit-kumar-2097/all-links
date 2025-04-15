@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Slot Allocation Tool</title>
+  <style>
+    /* body { font-family: Arial, sans-serif; margin: 20px; } */
+    table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+    th, td { 
+        border: 1px solid #ccc; 
+        padding: 8px; 
+        text-align: center;        
+    }
+    th { background-color: #f4f4f4; background-color: rgb(48, 97, 215);
+        color: white;}
+    tfoot td { font-weight: bold; background-color: #f9f9f9; background-color: rgb(48, 97, 215);
+        color: white;}
+    button { padding: 8px 16px; margin: 5px 0; }
+    .disabled { background-color: #ccc; cursor: not-allowed; }
+    h2 { margin-top: 40px; }
+
+    body{
+            /* font: 15px/1.5 Arial, Helvetica sans-serif; */
+            font: 15px/1.5 Arial, Helvetica sans-serif;
+            padding: 0;
+            margin: 0;
+            background-color: #f4f4f4;    
+            padding-top: 110px;
+        }
+
+
+
+        /* Global */
+        .page-layout{
+            width: 60%;
+            margin: auto;
+        }
+
+
+        /* header{
+            background: #35424a;
+            color: #ffffff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #e8491d 3px solid;    
+        } */
+
+        header{
+            background: rgb(48, 97, 215);
+            color: #ffffff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #767676 4.5px solid;
+            font-family: Roboto;
+            font-size: x-large;
+            font-weight: 300;
+        }
+
+        h2 {
+            color: rgb(48, 97, 215);
+            background-color: #f4f4f4;
+            margin: auto;
+            font-family: Roboto;
+            font-size: xx-large;
+            font-weight: 300;
+        }
+
+        #branding{
+            padding-right: 10px;
+            padding-left: 10px;
+            display: inline-block;
+            color: rgb(48, 97, 215);
+            border: 0.7px solid #f4f4f4;
+            background-color: #f4f4f4;
+            border-radius: 4px;
+            margin: auto;
+            letter-spacing: 5px;
+
+        }
+
+        .container{
+            /* display: grid;
+            grid-template-columns: repeat(3, 1fr);            
+            grid-template-rows: repeat();
+            grid-gap: 1rem;
+            align-items: stretch; */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            align-items: stretch; /* ensures each column aligns vertically */
+            padding: 20px;
+        }
+
+        .box{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            border: 0.7px solid grey;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: white;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .box img{
+            height: auto;
+            width: 100%;
+            margin: auto;
+            border-radius: 8px;
+            max-height: -webkit-fill-available;
+            border: 0.4px solid #f1f0ef;
+        }
+
+        .box video{
+            height: auto;
+            width: 100%;
+            margin: auto;
+            max-height: -webkit-fill-available;
+        }
+
+
+        .box li{
+            list-style: none;
+        }
+
+        .photo{
+            height: auto;
+            width: 230px;
+            margin: auto;
+        }
+
+        #main-data{
+            margin-top: 15px;
+        }
+
+
+        .type-img{
+            color:rgb(255 255 255);
+            display: inline-block;
+            border-radius: 6px;    
+            border: 0.7px solid #ffffff;    
+            background-color: #399c38;
+            padding-right: 3px;
+            padding-left: 3px;
+        }
+
+        .type-video{
+            color:rgb(255 255 255);
+            display: inline-block;
+            border-radius: 6px;    
+            border: 0.7px solid #ffffff;    
+            background-color: #ff3636;
+            padding-right: 3px;
+            padding-left: 3px;
+        }
+
+        .type-img a:hover {
+            background: #218838;
+        }
+
+        li a{
+            color: white;
+        }
+
+        nav{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            min-height: 70px;
+            background-image: linear-gradient(to right, rgb(4 8 18), rgb(48,97,215));
+            /* background: rgb(48, 97, 215); */
+            color: #ffffff;
+            padding-top: 30px;
+            border-bottom: #767676 4.5px solid;
+            font-family: Roboto;
+            font-size: x-large;
+            font-weight: 300;
+        }
+
+
+        nav { 
+            z-index: 3;
+        }
+        
+        video-player {
+            z-index: 1;
+        }
+
+        #main-content label{
+            padding-bottom: 10px;
+            display: inline-block;
+            color: rgb(48, 97, 215);
+            border: 0.7px solid #f4f4f4;
+            background-color: #f4f4f4;
+            border-radius: 4px;
+            margin: auto;
+        }
+        /* #ff3636 */
+
+        html,
+        body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        }
+
+        main {
+            margin-top: 9em;
+        /* min-height: calc(100% - 10em); */
+        /* 2em is the combined height of the header and footer */
+        }
+
+        footer {
+            height: 2em;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            /* background-color: rgb(48, 97, 215); */
+            background-image: linear-gradient(15deg, rgb(4 8 18), rgb(48,97,215));
+            color:white;
+            align-items: center;
+            height: 50px;    
+        }
+
+        footer p{
+            padding-right: 10px;
+            padding-left: 10px;
+            display: inline-block;
+            color: rgb(48, 97, 215);
+            border: 0.7px solid #f4f4f4;
+            background-color: #f4f4f4;
+            border-radius: 4px;
+            margin: auto;
+            font-family: Roboto;
+            font-size: inherit;
+            font-weight: 300;
+        }
+
+        .nav-img{
+            float:right;
+        }
+        .nav-img img{
+            float: right;
+            height: 100px;
+            width: auto;
+        }
+        .nav-img p{
+            direction: rtl;
+            font-size: initial;
+            letter-spacing: 4px;
+        }
+
+        @media screen and (max-width: 700px) {
+            .container{
+                display: grid;
+                grid-template-columns: repeat(1, 1fr);
+                /* grid-template-rows: repeat(4, 1fr); */
+                grid-template-rows: repeat();
+                grid-gap: 1rem;
+            }    
+        }
+
+
+        @media screen and (max-width: 1200px){
+            .nav-img{
+                display: contents
+            }
+            .page-layout{
+                display: inherit;
+            }
+        }
+
+
+        /* EXPERIMENT */
+        .box-link {
+        height: 100%;
+        }
+
+        .box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .description {
+            flex-grow: 1;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.4;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .description:visited {
+            color: #000; /* Same as normal, no purple */
+            text-decoration: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+
+        .type-img{
+            text-align: center;
+            background: #399c38;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .box p a:visited {
+            color: #000; /* Same as normal, no purple */
+            text-decoration: none;
+        }
+
+  </style>
+</head>
+<body>
+<main>
+
+    <nav>
+        <div class="page-layout">
+            <p id="branding">ID Distribution for Uploaders</p>
+            <div class="nav-img">
+            <img src="../../static/img/nav-img1.png" alt="">
+            <p>A Lalit Kumar Production</p>
+            </div>            
+        </div>    
+    </nav>    
+
+    <section id="main-data">
+        <div class="page-layout">  
+
+        <h2>Uploaders Table</h2>
+        <button onclick="addRow('uploadersTable')">Add Row</button>
+        <table id="uploadersTable">
+        <thead>
+            <tr><th>UPLOADERS</th><th>TARGETS</th></tr>
+        </thead>
+        <tbody contenteditable="true">
+            <tr><td>Abhilasha</td><td>600</td></tr>
+            <tr><td>Deepti</td><td>440</td></tr>
+        </tbody>
+        <tfoot>
+            <tr><td>Total</td><td id="uploadersTotal">0</td></tr>
+        </tfoot>
+        </table>
+
+        <h2>Stats Table</h2>
+        <button onclick="addRow('statsTable')">Add Row</button>
+        <table id="statsTable">
+        <thead>
+            <tr><th>Names</th><th>STATS TO DELIVER</th></tr>
+        </thead>
+        <tbody contenteditable="true">
+            <tr><td>Abhilasha</td><td>130</td></tr>
+            <tr><td>Deepti</td><td>130</td></tr>
+            <tr><td>Vicky</td><td>130</td></tr>
+            <tr><td>Rishabh</td><td>130</td></tr>
+            <tr><td>Megha</td><td>130</td></tr>
+            <tr><td>Prabhnoor</td><td>130</td></tr>
+            <tr><td>Gagandeep</td><td>130</td></tr>
+            <tr><td>Gokul</td><td>130</td></tr>
+        </tbody>
+        <tfoot>
+            <tr><td>Total</td><td id="statsTotal">0</td></tr>
+        </tfoot>
+        </table>
+
+        <button id="allocateButton" onclick="allocateSlots()" class="disabled" disabled>Allocate Slots</button>
+
+        <h2>Final Allocation Table</h2>
+        <table id="finalTable">
+        <thead>
+            <tr><th>UPLOADER</th><th>ID</th><th>sum # of ROWS</th></tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+            <tr><td>Total</td><td id="FinalTableTotal">0</td></tr>
+        </tfoot>
+        </table>
+
+        </div>
+    </section>
+
+<script>
+  function addRow(tableId) {
+    const tbody = document.querySelector(`#${tableId} tbody`);
+    const row = document.createElement("tr");
+    row.innerHTML = "<td></td><td></td>";
+    tbody.appendChild(row);
+    updateTotals();
+  }
+
+  function getTableData(tableId) {
+    const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+    return Array.from(rows).map(row => {
+      const cells = row.querySelectorAll("td");
+      return {
+        row,
+        nameCell: cells[0],
+        name: cells[0]?.innerText.trim(),
+        value: parseInt(cells[1]?.innerText.trim()) || 0
+      };
+    }).filter(row => row.name);
+  }
+
+  function highlightDuplicates(rows) {
+    const nameCounts = {};
+    rows.forEach(({ name }) => {
+      nameCounts[name] = (nameCounts[name] || 0) + 1;
+    });
+
+    rows.forEach(({ nameCell, name }) => {
+      if (nameCounts[name] > 1) {
+        nameCell.style.backgroundColor = 'crimson';
+        nameCell.style.color = 'white';
+      } else {
+        nameCell.style.backgroundColor = '';
+        nameCell.style.color = '';
+      }
+    });
+  }
+
+  function updateTotals() {
+    const uploaders = getTableData("uploadersTable");
+    const stats = getTableData("statsTable");
+
+    highlightDuplicates(uploaders);
+    highlightDuplicates(stats);
+
+    const uploadersTotal = uploaders.reduce((sum, u) => sum + u.value, 0);
+    const statsTotal = stats.reduce((sum, s) => sum + s.value, 0);
+
+    document.getElementById("uploadersTotal").innerText = uploadersTotal;
+    document.getElementById("statsTotal").innerText = statsTotal;
+
+    const allocateBtn = document.getElementById("allocateButton");
+    if (uploadersTotal === statsTotal && uploadersTotal !== 0) {
+      allocateBtn.disabled = false;
+      allocateBtn.classList.remove("disabled");
+    } else {
+      allocateBtn.disabled = true;
+      allocateBtn.classList.add("disabled");
+    }
+  }
+
+  document.addEventListener("input", updateTotals);
+  document.addEventListener("DOMContentLoaded", updateTotals);
+
+  function allocateSlots() {
+    const rawUploaders = getTableData("uploadersTable");
+    let stats = getTableData("statsTable");
+
+    const results = [];
+
+    let uploaders = rawUploaders.map(u => ({
+      name: u.name,
+      remaining: u.value
+    }));
+
+    // Step 1: Allocate self stats
+    stats = stats.filter(stat => {
+      const uploader = uploaders.find(u => u.name === stat.name);
+      if (uploader) {
+        results.push({ uploader: uploader.name, id: stat.name, value: stat.value });
+        uploader.remaining -= stat.value;
+        return false;
+      }
+      return true;
+    });
+
+    // Step 2: Allocate rest
+    for (let stat of stats) {
+      for (let uploader of uploaders) {
+        if (uploader.remaining <= 0) continue;
+        const assign = Math.min(uploader.remaining, stat.value);
+        if (assign > 0) {
+          results.push({ uploader: uploader.name, id: stat.name, value: assign });
+          uploader.remaining -= assign;
+          stat.value -= assign;
+        }
+        if (stat.value <= 0) break;
+      }
+    }
+
+    results.sort((a, b) => a.uploader.localeCompare(b.uploader));
+
+    // Final table rendering
+    const finalBody = document.querySelector("#finalTable tbody");
+    finalBody.innerHTML = "";
+
+    let totalSum = 0;
+    results.forEach(row => {
+      totalSum += row.value;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${row.uploader}</td><td>${row.id}</td><td>${row.value}</td>`;
+      finalBody.appendChild(tr);
+    });
+
+    // Add total row
+    const totalRow = document.createElement("tr");
+    totalRow.innerHTML = `<td colspan="2"><strong>Total</strong></td><td><strong>${totalSum}</strong></td>`;
+    totalRow.style.backgroundColor = "#f4f4f4";
+    finalBody.appendChild(totalRow);
+  }
+
+
+
+</script>
+
+
+</main>
+
+</body>
+</html>
