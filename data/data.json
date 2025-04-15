@@ -34,5 +34,11 @@
         "description": "This tool allows annotation on images by given by the user where the user can also give the list of options as well separated by line break.",
         "link": "apps/custom_image_annotator/index.html",
         "title": "Custom Image Annotator"
-    }      
+    },
+    {
+        "img": "static/img/id_slot_distribution.png",
+        "description": "This tool allows the user to distribute the slots to upload to the uploaders specificed by the user given the total sum is equal for both the tables only then the user would be able to click on the Allocate button.",
+        "link": "apps/id_slot_distribution/index.html",
+        "title": "ID Slot Distribution"
+    }  
 ]
