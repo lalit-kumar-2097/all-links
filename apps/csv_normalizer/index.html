@@ -4,20 +4,31 @@
   <meta charset="UTF-8">
   <title>CSV Normalizer (1NF)</title>
   <style>
-    body { font-family: sans-serif; max-width: 700px; margin: 2rem auto; }
+    body { font-family: sans-serif; max-width: 900px; margin: 2rem auto; }
     h1 { color: #333; }
     input, button, select { margin: 10px 0; padding: 8px; }
-    #step2, #step3, #downloadLink { display: none; margin-top: 15px; }
+    table { border-collapse: collapse; margin-top: 1rem; width: 100%; font-size: 14px; }
+    th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+    th { background: #f2f2f2; }
+    #step2, #step3, #downloadLink, #previewSection { display: none; margin-top: 15px; }
   </style>
+  <!-- Load PapaParse -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
   <h1>CSV Normalizer (1NF)</h1>
 
   <!-- Step 1 -->
   <div id="step1">
-    <p><b>Step 1:</b> Upload your CSV file.</p>
-    <input type="file" id="fileInput" accept=".csv">
-    <button id="loadBtn">Load CSV</button>
+    <p><b>Step 1:</b> Upload your CSV/TSV file.</p>
+    <input type="file" id="fileInput" accept=".csv,.tsv,.txt">
+    <button id="loadBtn">Load File</button>
+  </div>
+
+  <!-- Preview -->
+  <div id="previewSection">
+    <p><b>Preview of first 5 rows:</b></p>
+    <div id="previewTable"></div>
   </div>
 
   <!-- Step 2 -->
@@ -29,77 +40,102 @@
 
   <!-- Step 3 -->
   <div id="step3">
-    <p><b>Step 3:</b> Download your normalized CSV.</p>
-    <a id="downloadLink">Download Normalized CSV</a>
+    <p><b>Step 3:</b> Download your normalized file.</p>
+    <a id="downloadLink">Download Normalized File</a>
   </div>
 
   <script>
-    let fileContent = "";
+    let parsedData = [];
+    let detectedDelimiter = ","; // fallback
+
+    // Create preview table
+    function renderPreview(data) {
+      const previewDiv = document.getElementById('previewTable');
+      const maxRows = Math.min(5, data.length);
+
+      let html = "<table><thead><tr>";
+      data[0].forEach(col => {
+        html += "<th>" + (col || "") + "</th>";
+      });
+      html += "</tr></thead><tbody>";
+
+      for (let i = 1; i < maxRows; i++) {
+        html += "<tr>";
+        data[i].forEach(cell => {
+          html += "<td>" + (cell || "") + "</td>";
+        });
+        html += "</tr>";
+      }
+
+      html += "</tbody></table>";
+      previewDiv.innerHTML = html;
+      document.getElementById('previewSection').style.display = "block";
+    }
 
     document.getElementById('loadBtn').addEventListener('click', () => {
       const fileInput = document.getElementById('fileInput');
       if (!fileInput.files.length) {
-        alert('Please select a CSV file.');
+        alert('Please select a file.');
         return;
       }
 
       const file = fileInput.files[0];
-      const reader = new FileReader();
 
-      reader.onload = (e) => {
-        fileContent = e.target.result.trim();
-        const lines = fileContent.split(/\r?\n/);
-        const header = lines[0].split(',');
+      Papa.parse(file, {
+        delimiter: "", // auto-detect
+        skipEmptyLines: true,
+        complete: function(results) {
+          parsedData = results.data;
+          detectedDelimiter = results.meta.delimiter || ","; // capture detected delimiter
 
-        // Populate dropdown
-        const select = document.getElementById('columnSelect');
-        select.innerHTML = "";
-        header.forEach((col, idx) => {
-          let option = document.createElement('option');
-          option.value = idx;
-          option.textContent = col.trim();
-          select.appendChild(option);
-        });
+          // Populate dropdown with header row
+          const header = parsedData[0];
+          const select = document.getElementById('columnSelect');
+          select.innerHTML = "";
+          header.forEach((col, idx) => {
+            let option = document.createElement('option');
+            option.value = idx;
+            option.textContent = col.trim() || `Column ${idx+1}`;
+            select.appendChild(option);
+          });
 
-        // Show step 2
-        document.getElementById('step2').style.display = "block";
-      };
-
-      reader.readAsText(file);
+          // Show preview + step 2
+          renderPreview(parsedData);
+          document.getElementById('step2').style.display = "block";
+        }
+      });
     });
 
     document.getElementById('processBtn').addEventListener('click', () => {
-      const lines = fileContent.split(/\r?\n/);
-      const header = lines.shift().split(',');
       const colIndex = parseInt(document.getElementById('columnSelect').value, 10);
+      const header = parsedData[0];
+      let output = [header];
 
-      let output = [];
-      output.push(header.join(','));
-
-      lines.forEach(line => {
-        if (!line.trim()) return; // skip empty
-        let cols = line.split(',');
-        if (cols[colIndex]) {
-          let parts = cols[colIndex].split('|');
+      for (let i = 1; i < parsedData.length; i++) {
+        let row = parsedData[i];
+        if (row[colIndex]) {
+          let parts = row[colIndex].split('|');
           parts.forEach(p => {
-            let newRow = [...cols];
+            let newRow = [...row];
             newRow[colIndex] = p.trim();
-            output.push(newRow.join(','));
+            output.push(newRow);
           });
         } else {
-          output.push(cols.join(',')); // keep row if no value
+          output.push(row);
         }
-      });
+      }
 
-      // Prepare download
-      const blob = new Blob([output.join('\n')], { type: 'text/csv' });
+      // Convert back to CSV/TSV with the same delimiter
+      const csvString = Papa.unparse(output, { delimiter: detectedDelimiter });
+
+      // Create download link
+      const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.getElementById('downloadLink');
       link.href = url;
       link.download = 'normalized.csv';
       link.style.display = 'inline-block';
 
-      // Show step 3
       document.getElementById('step3').style.display = "block";
     });
   </script>
