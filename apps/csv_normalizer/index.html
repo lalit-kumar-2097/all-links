@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSV Normalizer (1NF)</title>
+  <style>
+    body { font-family: sans-serif; max-width: 700px; margin: 2rem auto; }
+    h1 { color: #333; }
+    input, button, select { margin: 10px 0; padding: 8px; }
+    #step2, #step3, #downloadLink { display: none; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <h1>CSV Normalizer (1NF)</h1>
+
+  <!-- Step 1 -->
+  <div id="step1">
+    <p><b>Step 1:</b> Upload your CSV file.</p>
+    <input type="file" id="fileInput" accept=".csv">
+    <button id="loadBtn">Load CSV</button>
+  </div>
+
+  <!-- Step 2 -->
+  <div id="step2">
+    <p><b>Step 2:</b> Choose the column to normalize (split by "|").</p>
+    <select id="columnSelect"></select>
+    <button id="processBtn">Normalize</button>
+  </div>
+
+  <!-- Step 3 -->
+  <div id="step3">
+    <p><b>Step 3:</b> Download your normalized CSV.</p>
+    <a id="downloadLink">Download Normalized CSV</a>
+  </div>
+
+  <script>
+    let fileContent = "";
+
+    document.getElementById('loadBtn').addEventListener('click', () => {
+      const fileInput = document.getElementById('fileInput');
+      if (!fileInput.files.length) {
+        alert('Please select a CSV file.');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        fileContent = e.target.result.trim();
+        const lines = fileContent.split(/\r?\n/);
+        const header = lines[0].split(',');
+
+        // Populate dropdown
+        const select = document.getElementById('columnSelect');
+        select.innerHTML = "";
+        header.forEach((col, idx) => {
+          let option = document.createElement('option');
+          option.value = idx;
+          option.textContent = col.trim();
+          select.appendChild(option);
+        });
+
+        // Show step 2
+        document.getElementById('step2').style.display = "block";
+      };
+
+      reader.readAsText(file);
+    });
+
+    document.getElementById('processBtn').addEventListener('click', () => {
+      const lines = fileContent.split(/\r?\n/);
+      const header = lines.shift().split(',');
+      const colIndex = parseInt(document.getElementById('columnSelect').value, 10);
+
+      let output = [];
+      output.push(header.join(','));
+
+      lines.forEach(line => {
+        if (!line.trim()) return; // skip empty
+        let cols = line.split(',');
+        if (cols[colIndex]) {
+          let parts = cols[colIndex].split('|');
+          parts.forEach(p => {
+            let newRow = [...cols];
+            newRow[colIndex] = p.trim();
+            output.push(newRow.join(','));
+          });
+        } else {
+          output.push(cols.join(',')); // keep row if no value
+        }
+      });
+
+      // Prepare download
+      const blob = new Blob([output.join('\n')], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const link = document.getElementById('downloadLink');
+      link.href = url;
+      link.download = 'normalized.csv';
+      link.style.display = 'inline-block';
+
+      // Show step 3
+      document.getElementById('step3').style.display = "block";
+    });
+  </script>
+</body>
+</html>
