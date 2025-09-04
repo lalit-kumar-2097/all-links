@@ -2,21 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="../../static/css/nav.css">
   <title>CSV Normalizer (1NF)</title>
   <style>
-    body { font-family: sans-serif; max-width: 900px; margin: 2rem auto; }
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+    body { font-family: Roboto; max-width: 900px; margin: 2rem auto; margin-top: 130px;}
     h1 { color: #333; }
-    input, button, select { margin: 10px 0; padding: 8px; }
+    input, button, select { margin: 10px 0; padding: 8px; font-size: 14px; }
     table { border-collapse: collapse; margin-top: 1rem; width: 100%; font-size: 14px; }
     th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
-    th { background: #f2f2f2; }
+    th { background: #f2f2f2;}
     #step2, #step3, #downloadLink, #previewSection { display: none; margin-top: 15px; }
+    #downloadLink { padding: 10px 15px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; }
+    #downloadLink:hover { background: #218838; }
   </style>
   <!-- Load PapaParse -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-  <h1>CSV Normalizer (1NF)</h1>
+  <!-- Navbar -->
+    <div class="navbar">
+    <div class="nav-container">
+      <button class="left-button">CSV/TSV Normalizer</button>
+      <div class="right-info">
+        <div class="right-info-text">A Lalit Kumar<br>Production</div>
+        <img src="../../static/img/nav-img2.png" alt="Lalit Icon" />
+      </div>
+    </div>
+  </div>
 
   <!-- Step 1 -->
   <div id="step1">
@@ -42,6 +55,12 @@
   <div id="step3">
     <p><b>Step 3:</b> Download your normalized file.</p>
     <a id="downloadLink">Download Normalized File</a>
+  </div>
+  
+  <!-- Step 4 - Converted table preview -->
+   <div id="convertedPreviewSection" style="display: none;">
+    <p><b>Preview of normalized data (first 5 rows):</b></p>
+    <div id="convertedPreviewTable"></div>
   </div>
 
   <script>
@@ -123,7 +142,29 @@
         } else {
           output.push(row);
         }
+      }    
+
+      // Function to render converted preview
+      function renderConvertedPreview(data) {
+        const previewDiv = document.getElementById('convertedPreviewTable');
+        const maxRows = Math.min(20, data.length);
+        let html = "<table><thead><tr>";
+        data[0].forEach(col => {
+          html += "<th>" + (col || "") + "</th>";
+        });
+        html += "</tr></thead><tbody>";
+        for (let i = 1; i < maxRows; i++) {
+          html += "<tr>";
+          data[i].forEach(cell => {
+            html += "<td>" + (cell || "") + "</td>";
+          });
+          html += "</tr>";
+        }
+        html += "</tbody></table>";
+        previewDiv.innerHTML = html;
+        document.getElementById('convertedPreviewSection').style.display = "block";
       }
+      
 
       // Convert back to CSV/TSV with the same delimiter
       const csvString = Papa.unparse(output, { delimiter: detectedDelimiter });
@@ -137,6 +178,8 @@
       link.style.display = 'inline-block';
 
       document.getElementById('step3').style.display = "block";
+      // Show converted preview
+      renderConvertedPreview(output);
     });
   </script>
 </body>

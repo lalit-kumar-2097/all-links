@@ -1,4 +1,10 @@
 [
+{
+        "img": "static/img/csv_normalizer.png",
+        "description": "This is a powerful tool which let's you Normalize your CSV table into 1NF form. Just load the CSV and select the columns you want to unpivot.",
+        "link": "apps/csv_normalizer/index.html",
+        "title": "CSV Normalizer"
+    },
     {
         "img": "static/img/image_viewer_1.png",
         "description": "This tool lets the user to load image_urls in a row format.",
